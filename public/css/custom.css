@@ -1,0 +1,77 @@
+/* CUSTOM */
+
+#mfspDropzoneHovering,
+#mfspDropzone:hover {
+  background: repeating-linear-gradient(
+    45deg,
+    #787878,
+    #787878 10px,
+    #000000 10px,
+    #000000 20px
+  );
+  color: white;
+  font-weight: bold;
+}
+
+#mfspDropzoneHoveringDisabled {
+  background-color: grey;
+  display: none;
+}
+
+.custom-mfsp-overlay {
+  overflow-y: auto;
+  z-index: 100000 !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+.custom-badge {
+  margin-right: 0.2rem;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome, Edge, Opera and Firefox */
+}
+
+.badge > .badge-button {
+  cursor: pointer;
+  font-size: 0.7rem;
+  margin-left: 0.3rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.jstree-icon-size {
+  font-size: 1.6rem;
+}
+
+.msfp-button-font-size {
+  font-size: 1rem;
+  font-weight: bold;
+  vertical-align: inherit;
+}
+
+.table-sm-custom td {
+  padding: 0 !important;
+}
+
+.react-datepicker__input-container > input {
+  width: 100%;
+}
+
+.swal2-container {
+  z-index: 1000000 !important;
+}
+
+.tooltip {
+  z-index: 1000000 !important;
+}
