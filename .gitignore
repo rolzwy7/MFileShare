@@ -1,0 +1,5 @@
+vendor/
+node_modules/
+.cache/
+.parcel-cache/
+mfsp_crypto_secret.php
