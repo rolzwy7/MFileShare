@@ -25,13 +25,13 @@ class Mfsp_REST_API
      */
     public static function init()
     {
-        register_rest_route(self::BASE, "/test", array(
-            [
-                "methods" => "GET",
-                "callback" => array("Mfsp_REST_API", "testEndpoint"),
-                "permission_callback" => ["Mfsp_REST_API", "permissionAlwaysAllow"],
-            ]
-        ));
+        // register_rest_route(self::BASE, "/test", array(
+        //     [
+        //         "methods" => "GET",
+        //         "callback" => array("Mfsp_REST_API", "testEndpoint"),
+        //         "permission_callback" => ["Mfsp_REST_API", "permissionAlwaysAllow"],
+        //     ]
+        // ));
         // SHARING
         register_rest_route(self::BASE, "/share/(?P<sharing_secret>(\w+-){4}\w+)", array(
             [
@@ -253,18 +253,20 @@ class Mfsp_REST_API
         ));
     }
 
-    public static function testEndpoint(WP_REST_Request $request)
-    {
-        // $testtt = permSecretExplorer("05abcc7f-b700-4ff4-963f-e90cb8f66a70", 6);
-        return rest_ensure_response(array(
-            "success" => true,
-            "msg" => "Test endpoint",
-            "can_administrator" => current_user_can('administrator'),
-            "can_mfsp_employee" => current_user_can('mfsp_employee'),
-            "user" => wp_get_current_user(),
-            // "testtt" => $testtt
-        ));
-    }
+    // public static function testEndpoint(WP_REST_Request $request)
+    // {
+    //     // global $WP_DEBUG;
+    //     // $testtt = permSecretExplorer("05abcc7f-b700-4ff4-963f-e90cb8f66a70", 6);
+    //     return rest_ensure_response(array(
+    //         "success" => true,
+    //         "msg" => "Test endpoint",
+    //         "can_administrator" => current_user_can('administrator'),
+    //         "can_mfsp_employee" => current_user_can('mfsp_employee'),
+    //         "user" => wp_get_current_user(),
+    //         "WP_DEBUG" => WP_DEBUG,
+    //         // "testtt" => $testtt
+    //     ));
+    // }
 
     public static function shareController(WP_REST_Request $request)
     {
@@ -1161,18 +1163,27 @@ class Mfsp_REST_API
         }
 
         $files = $request->get_file_params();
+
+        if (WP_DEBUG) {
+            error_log(print_r($files, true));
+        }
         // $headers = $request->get_headers();
 
         if (!empty($files) && !empty($files['file'])) {
             $file = $files['file'];
+            if (WP_DEBUG) {
+                error_log(realpath($file['tmp_name']));
+            }
         } else {
             throw new Mfsp_REST_API_Exception('No file send');
         }
+
 
         // Tells whether the file was uploaded via HTTP POST
         if (!is_uploaded_file($file['tmp_name'])) {
             throw new Mfsp_REST_API_Exception('File upload check with is_uploaded_file failed');
         }
+
         // Confirm that there is no file errors
         if (!$file['error'] === UPLOAD_ERR_OK) {
             throw new Mfsp_REST_API_Exception('Upload error: ' . $file['error']);
@@ -1226,8 +1237,8 @@ class Mfsp_REST_API
         // OLD
         // move_uploaded_file($file['tmp_name'], $disk_path);
         // NEW
-        $src = fopen($file['tmp_name'], "r") or die("Unable to open file!");
-        $dst = fopen($disk_path, "w") or die("Unable to open file!");
+        $src = fopen($file['tmp_name'], "r") or die("Unable to open tmp_name file!");
+        $dst = fopen($disk_path, "w") or die("Unable to open disk_path file!");
         $src_content = fread($src, filesize($file['tmp_name']));
         fclose($src);
         fwrite($dst, msfpEncrypt($src_content));
